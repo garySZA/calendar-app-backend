@@ -2,21 +2,30 @@ import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 
-import { userRouter } from '../routes';
+import { authRouter, userRouter } from '../routes';
+import { config } from '../config';
+import { RoutesType } from '../types';
+import { dbConnection } from '../database';
 
 class Server {
 
     private app: Application;
     private port: string;
-    private baseUrl: string = '/api/v1';
-    private apiPaths = {
-        users: `${ this.baseUrl }/users`,
-    }
+    private baseUrl: string;
+    private apiPaths: RoutesType;
 
     constructor() {
         this.app = express();
-        this.port = process.env.PORT || '7997';
+        this.port = config.port || '7997';
+        this.baseUrl = config.base_url || '/api/v1';
+        this.apiPaths = {
+            auth: `${ this.baseUrl }/auth`,
+            users: `${ this.baseUrl }/users`,
+        }
 
+        //* Conexión con la base de datos
+        this.connectDB();
+        
         //* Middlewares: 
         this.middlewares();
 
@@ -42,6 +51,11 @@ class Server {
 
     routes() {
         this.app.use( this.apiPaths.users, userRouter );
+        this.app.use( this.apiPaths.auth, authRouter );
+    }
+
+    async connectDB(){
+        await dbConnection();
     }
 
     listen() {

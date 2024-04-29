@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 
-export const getUsers = ( req: Request, resp: Response ) => {
+const getUsers = ( req: Request, resp: Response ) => {
     resp.json({
-        msg: 'getUsers'
+        msg: `getUsers`
     });
 };
 
-export const getUser = ( req: Request, resp: Response ) => {
+const getUser = ( req: Request, resp: Response ) => {
     const { id } = req.params;
     
     resp.json({
@@ -15,7 +15,7 @@ export const getUser = ( req: Request, resp: Response ) => {
     });
 };
 
-export const postUser = ( req: Request, resp: Response ) => {
+const postUser = ( req: Request, resp: Response ) => {
     const { body } = req;
     
     resp.json({
@@ -24,7 +24,7 @@ export const postUser = ( req: Request, resp: Response ) => {
     });
 };
 
-export const putUser = ( req: Request, resp: Response ) => {
+const putUser = ( req: Request, resp: Response ) => {
     const { id } = req.params;
     const { body } = req;
     
@@ -34,7 +34,7 @@ export const putUser = ( req: Request, resp: Response ) => {
     });
 };
 
-export const deleteUser = ( req: Request, resp: Response ) => {
+const deleteUser = ( req: Request, resp: Response ) => {
     const { id } = req.params;
     
     resp.json({
@@ -42,3 +42,11 @@ export const deleteUser = ( req: Request, resp: Response ) => {
         id
     });
 };
+
+export {
+    deleteUser,
+    getUser,
+    getUsers,
+    postUser,
+    putUser,
+}
