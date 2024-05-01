@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
+
 import { login, register, renew } from '../controllers';
-import { validateFields } from '../middlewares';
+import { validateFields, validateJWT } from '../middlewares';
+import { isUniqueField } from '../helpers';
 
 export const authRouter = Router();
 
@@ -19,7 +21,10 @@ authRouter.post('/register', [
     check('email', 'El email no es válido').isEmail(),
     check('password', 'El password es obligatorio').not().isEmpty(),
     check('password', 'El password debe tener al menos 6 caracteres').isLength({ min: 6 }),
+    check('email').custom( ( value ) => isUniqueField( value, 'email' ) ),
     validateFields
 ], register);
 
-authRouter.get('/renew', renew);
+authRouter.get('/renew', [
+    validateJWT,
+], renew);
