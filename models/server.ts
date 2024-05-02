@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 
-import { authRouter, userRouter } from '../routes';
+import { authRouter, eventsRouter, userRouter } from '../routes';
 import { config } from '../config';
 import { RoutesType } from '../types';
 import { dbConnection } from '../database';
@@ -21,6 +21,7 @@ class Server {
         this.apiPaths = {
             auth: `${ this.baseUrl }/auth`,
             users: `${ this.baseUrl }/users`,
+            events: `${ this.baseUrl }/events`
         }
 
         //* Conexión con la base de datos
@@ -50,8 +51,9 @@ class Server {
     }
 
     routes() {
-        this.app.use( this.apiPaths.users, userRouter );
         this.app.use( this.apiPaths.auth, authRouter );
+        this.app.use( this.apiPaths.events, eventsRouter );
+        this.app.use( this.apiPaths.users, userRouter );
     }
 
     async connectDB(){
