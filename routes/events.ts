@@ -21,7 +21,7 @@ eventsRouter.post('/', [
 ], createEvent)
 
 eventsRouter.put('/:id', [
-    // check('id', 'El id no es válido').isMongoId(),    
+    check('id', 'El id no es válido').isMongoId(),    
 ], updateEvent)
 
 eventsRouter.delete('/:id', [
